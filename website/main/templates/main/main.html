@@ -1,0 +1,5 @@
+{% include 'base.html' %}
+
+{% for plot in plots %}
+    {% include 'main/chart.html' with plot=plot %}
+{% endfor %}
