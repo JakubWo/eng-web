@@ -8,6 +8,8 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/base.css' %}">
     <title>Weather Station</title>
 </head>
 <body>
@@ -16,5 +18,6 @@
 
 {% block content %}
 {% endblock content %}
+
 </body>
 </html>

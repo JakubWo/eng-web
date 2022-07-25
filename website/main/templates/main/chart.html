@@ -41,12 +41,10 @@
                     }]
                 }],
             }
+            Chart.defaults.color = 'rgba(255,255,255,0.5)';
+            Chart.defaults.plugins.legend.labels.color = 'white';
 
             const config = {
-                title: {
-                    text: "{{ plot.name }} chart",
-                    display: true
-                },
                 scales: {
                     x: {
                         ticks: {
@@ -54,8 +52,9 @@
                                 return index % 10 === 0 ? convertTimestamp(this.getLabelForValue(value)) : '';
                             }
                         }
-                    }
+                    },
                 }
+
             }
 
             new Chart(ctx, {

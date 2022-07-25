@@ -1,0 +1,28 @@
+<VirtualHost weather-station.localhost:80>
+	ServerName weather-station.localhost
+	Redirect permanent / https://weather-station.localhost
+</VirtualHost>
+
+<VirtualHost weather-station.localhost:443>
+        ServerName weather-station.localhost
+        ErrorLog /path/logs/weberror.log
+        CustomLog /path/logs/webaccess.log combine
+
+	DocumentRoot /path/djangoweb
+        <Directory /path/djangoweb>
+                Require all granted
+        </Directory>
+
+        Alias /static/ /path/djangoweb/static/
+        <Directory /path/static>
+		    Require all granted
+        </Directory>
+
+        WSGIDaemonProcess web python-home=/path/djangoweb/env python-path=/path/djangoweb/
+        WSGIProcessGroup web
+        WSGIScriptAlias / /path/djangoweb/website/wsgi.py
+
+	SSLEngine on
+	SSLCertificateFile /etc/apache2/certificate/apache-certificate.crt
+    SSLCertificateKeyFile /etc/apache2/certificate/apache.key
+</VirtualHost>

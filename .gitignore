@@ -21,7 +21,6 @@ dist/
 
 # Maven
 target/
-dist/
 
 # JetBrains IDE
 .idea/
@@ -50,3 +49,6 @@ Thumbs.db
 
 # virtual environment
 env/
+
+# absolute static files
+/static/
