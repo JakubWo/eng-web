@@ -10,8 +10,8 @@ from typing import Dict
 from .models import load_charts_data, load_single_chart_data
 
 
-@register.filter(name='get_dict_elem')
-def get_dict_elem(value, arg):
+@register.filter(name='get_list_elem')
+def get_list_elem(value, arg):
     for plot in value:
         if plot['name'] == arg:
             return plot
