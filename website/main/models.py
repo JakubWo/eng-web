@@ -1,4 +1,4 @@
-from django.db import models
+import random
 
 # vok - lotne związki organiczne
 
@@ -29,36 +29,70 @@ from django.db import models
 """
 
 
-def load_charts_data(records: list) -> dict:
+def random_color() -> str:
+    return '#%02X%02X%02X' % (random.randint(0, 200), random.randint(0, 200), random.randint(0, 200))
+
+
+def map_known_keys(key: str) -> str:
+    map = {
+        'temperature': 'Temperatura',
+        'humidity': 'Wilgotność powietrza',
+        'pressure': 'Ciśnienie',
+        'voc': 'Lotne związki organiczne'
+    }
+
+    return map.get(key, key)
+
+
+def load_charts_data(records: list, plot_name: str = None) -> dict:
     plots = dict()
 
     for record in records:
+        if type(record) is not dict or 'timestamp' not in record.keys():
+            continue
+
         timestamp = record['timestamp']
 
         for key in record:
             if key == 'timestamp':
                 continue
             elif key not in plots:
-                plots[key] = Plot(key)
+                plots[key] = Plot(key, map_known_keys(key), random_color())
 
-            plots[key].add_record(timestamp, record[key])
+            if plot_name is None or key == plot_name:
+                plots[key].add_record(timestamp, record[key])
+
+    # Don't show plots with small amount of data
+    for plot_name in plots:
+        if plots[plot_name].count_records() < 50:
+            plots.pop(plot_name)
 
     return plots
 
 
 class Plot:
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, mapped_name: str, color: str) -> None:
         self.__name = name
+        self.__mapped_name = mapped_name
+        self.__color = color
         self.__timestamps = list()
         self.__values = list()
 
     def add_record(self, timestamp: float, value) -> None:
-        self.__timestamps.append(int(timestamp))
+        if value is None:
+            return
+
+        self.__timestamps.append(int(timestamp * 1000))
         self.__values.append(value)
 
     def get_records(self) -> dict:
         return {
             'name': self.__name,
+            'mapped_name': self.__mapped_name,
             'timestamps': self.__timestamps,
             'values': self.__values,
+            'color': self.__color
         }
+
+    def count_records(self) -> int:
+        return len(self.__timestamps)

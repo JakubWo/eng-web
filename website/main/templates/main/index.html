@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            {% for plot in plots %}
+                <div class="col-6 my-3">
+                    {% include 'main/chart.html' with plot=plot %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

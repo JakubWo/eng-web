@@ -1,60 +1,31 @@
 {% block scripts %}
     <script>
-        function convertTimestamp(timestamp) {
-            const date = new Date(parseInt(timestamp) * 1000);
-            return ('0' + date.getDate()).slice(-2) + '/'
-                + ('0' + (date.getMonth() + 1)).slice(-2) + '/'
-                + date.getFullYear() + ' '
-                + ('0' + date.getHours()).slice(-2) + ':'
-                + ('0' + date.getMinutes()).slice(-2) + ':'
-                + ('0' + date.getSeconds()).slice(-2);
-        }
-
         $(document).ready(function () {
-            const ctx = document.getElementById('chart_{{ plot.name }}').getContext('2d');
+            const ctx = document.getElementById('chart_{{ plot.name }}')
 
             const data = {
-                labels: [{% for data in plot.timestamps %}'{{ data }}',{% endfor %}],
+                labels: [{% for data in plot.timestamps %} {{ data }},{% endfor %}],
                 datasets: [{
-                    label: '{{ plot.name }}',
-                    data: [{% for data in plot.values %}{{ data }}, {% endfor %}],
-
-                    borderColor: ['rgb(255,0,0)'],
-                    borderWidth: 1,
-
-                    fill: true,
-                    backgroundColor: ['rgba(229,43,43,0.66)'],
+                    data: [{% for data in plot.values %} {{ data }}, {% endfor %}],
+                    borderColor: '{{ plot.color }}',
+                    backgroundColor: '{{ plot.color }}',
                 }]
             }
 
-            const test_data = {
-                datasets: [{
-                    data: [{
-                        x: '2021-11-06 23:39:30',
-                        y: 50
-                    }, {
-                        x: '2021-11-07 01:00:28',
-                        y: 60
-                    }, {
-                        x: '2021-11-07 09:00:28',
-                        y: 20
-                    }]
-                }],
-            }
-            Chart.defaults.color = 'rgba(255,255,255,0.5)';
-            Chart.defaults.plugins.legend.labels.color = 'white';
-
             const config = {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
                 scales: {
                     x: {
-                        ticks: {
-                            callback: function (value, index) {
-                                return index % 10 === 0 ? convertTimestamp(this.getLabelForValue(value)) : '';
-                            }
+                        type: 'time',
+                        time: {
+                            unit: 'month'
                         }
                     },
                 }
-
             }
 
             new Chart(ctx, {
@@ -67,8 +38,18 @@
 {% endblock scripts %}
 
 {% block content %}
-{#    <p>{{ plot.name }}</p>#}
-{#    <p>{{ plot.timestamps }}</p>#}
-{#    <p>{{ plot.values }}</p>#}
-    <canvas id="chart_{{ plot.name }}" height="50"></canvas>
+{#    {{ plot }}#}
+{#    {{ plot.color }}#}
+{#    {{ plot.values|length }}#}
+{#    {{ plot.timestamps|length }}#}
+{#    {% for data in plot.timestamps %} {{ data }},{% endfor %}#}
+{#    {% for data in plot.values %} {{ data }}, {% endfor %}#}
+    <div class="card bg-dark">
+        <div class="card-header text-center">
+            <h2>{{ plot.mapped_name|capfirst }}</h2>
+        </div>
+        <div class="card-body bg-light">
+            <canvas id="chart_{{ plot.name }}" height="100"></canvas>
+        </div>
+    </div>
 {% endblock content %}
