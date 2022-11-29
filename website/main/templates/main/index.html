@@ -14,7 +14,7 @@
             {% for plot in plots %}
                 <div class="col-6 my-3">
                     <a href="{% url 'plot' plot_name=plot.name %}" style="color: inherit; text-decoration: inherit;">
-                        {% include 'main/chart.html' with plot=plot %}
+                        {% include 'component/chart.html' with plot=plot %}
                     </a>
                 </div>
             {% endfor %}
