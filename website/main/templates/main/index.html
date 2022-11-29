@@ -3,9 +3,19 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row">
+            <div class="col">
+                <div class="alert alert-dark">
+                    <span>Poniższe wykresy przedstawiają ostatnie 100 zestawy danych, które zostały zebrane przez urządzenie.</span><br>
+                    <span>Aby przejść do bardziej szczegółowych informacji można użyć menu po lewej stronie, bądź wcisnąć wybrany wykres.</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             {% for plot in plots %}
                 <div class="col-6 my-3">
-                    {% include 'main/chart.html' with plot=plot %}
+                    <a href="{% url 'plot' plot_name=plot.name %}" style="color: inherit; text-decoration: inherit;">
+                        {% include 'main/chart.html' with plot=plot %}
+                    </a>
                 </div>
             {% endfor %}
         </div>
