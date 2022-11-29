@@ -34,17 +34,52 @@ def random_color() -> str:
 
 
 def map_known_keys(key: str) -> str:
-    map = {
+    switch = {
         'temperature': 'Temperatura',
         'humidity': 'Wilgotność powietrza',
         'pressure': 'Ciśnienie',
         'voc': 'Lotne związki organiczne'
     }
 
-    return map.get(key, key)
+    return switch.get(key, key)
 
 
-def load_charts_data(records: list, plot_name: str = None) -> dict:
+def load_single_chart_data(records: list, plot_name: str) -> dict:
+    plots = dict()
+    plot_records = dict()
+
+    for record in records:
+        if type(record) is not dict or 'timestamp' not in record.keys():
+            continue
+
+        timestamp = record['timestamp']
+
+        for key in record:
+            if key == 'timestamp':
+                continue
+
+            elif key not in plots:
+                plots[key] = Plot(key, map_known_keys(key), random_color())
+
+            elif key == plot_name:
+                plots[key].add_record(timestamp, record[key])
+
+            elif key not in plot_records:
+                plot_records[key] = 1
+
+            else:
+                plot_records[key] += 1
+
+    # Don't show plots with small amount of data
+    # Allow 0 for generating sidebar views
+    for key in plot_records:
+        if plot_records[key] < 50:
+            plots.pop(plot_name)
+
+    return plots
+
+
+def load_charts_data(records: list) -> dict:
     plots = dict()
 
     for record in records:
@@ -59,13 +94,13 @@ def load_charts_data(records: list, plot_name: str = None) -> dict:
             elif key not in plots:
                 plots[key] = Plot(key, map_known_keys(key), random_color())
 
-            if plot_name is None or key == plot_name:
-                plots[key].add_record(timestamp, record[key])
+            plots[key].add_record(timestamp, record[key])
 
     # Don't show plots with small amount of data
-    for plot_name in plots:
-        if plots[plot_name].count_records() < 50:
-            plots.pop(plot_name)
+    # Allow 0 for generating sidebar views
+    for key in plots:
+        if plots[key].count_records() < 50:
+            plots.pop(key)
 
     return plots
 

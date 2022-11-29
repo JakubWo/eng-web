@@ -6,35 +6,38 @@
 
         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
             <li class="nav-item">
-                <a href="{% url 'index' %}" class="nav-link align-middle px-0">
+                <a href="{% url 'index' %}"
+                   class="nav-link align-middle px-0" {% if not plot_name %}style="color: #9b9bff"{% endif %}>
                     <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Strona główna</span>
                 </a>
             </li>
             <li>
                 <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle" role="button">
                     <i class="fs-4 bi-graph-up"></i> <span class="ms-1 d-none d-sm-inline">Wykresy</span>
-                    <i class="bi-caret-down-fill"></i>
                 </a>
                 <ul class="collapse show nav flex-column ms-3" id="submenu1" data-bs-parent="#menu">
                     {% for plot in plots %}
                         <li>
-                            <a href="#" class="nav-link px-0"> <span
-                                    class="d-none d-sm-inline">{{ plot.mapped_name }}</span></a>
+                            <a href="{% url 'plot' plot_name=plot.name %}" class="nav-link px-0"
+                               {% if plot_name == plot.name %}style="color: #9b9bff"{% endif %}>
+                                <i class="bi bi-dot"></i><span class="d-none d-sm-inline">{{ plot.mapped_name }}</span>
+                            </a>
                         </li>
                     {% endfor %}
                 </ul>
             </li>
             <li>
-                <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                <div class="px-0 align-middle text-primary">
                     <i class="fs-4 bi-database"></i> <span class="ms-1 d-none d-sm-inline">Zmiana źródła danych</span>
-                    <i class="bi-caret-down-fill"></i>
-                </a>
-                <ul class="collapse show nav flex-column ms-3" id="submenu2" data-bs-parent="#menu">
+                </div>
+                <ul class="nav flex-column ms-3" data-bs-parent="#menu">
                     <li>
-                        <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Dane stacji</span></a>
+                        <a href="#" class="nav-link px-0"> <i class="bi bi-dot"></i>
+                            <span class="d-none d-sm-inline">Dane stacji</span></a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Dane archiwalne</span></a>
+                        <a href="#" class="nav-link px-0"> <i class="bi bi-dot"></i>
+                            <span class="d-none d-sm-inline">Dane archiwalne</span></a>
                     </li>
                 </ul>
             </li>

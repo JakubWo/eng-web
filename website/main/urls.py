@@ -4,5 +4,5 @@ from .views import PlotView
 
 urlpatterns = [
     path('', MainView.as_view(), name='index'),
-    path('/plots', PlotView.as_view(), name='plot')
+    path('plot/<str:plot_name>', PlotView.as_view(), name='plot')
 ]
