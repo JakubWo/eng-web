@@ -1,14 +1,14 @@
 {% block scripts %}
     <script>
         $(document).ready(function () {
-            const ctx = document.getElementById('chart_{{ plot.name }}')
+            const ctx = document.getElementById('chart_{{ plot.get_name }}')
 
             const data = {
-                labels: [{% for data in plot.timestamps %} {{ data }},{% endfor %}],
+                labels: [{% for data in plot.get_records %} {{ data.timestamp }},{% endfor %}],
                 datasets: [{
-                    data: [{% for data in plot.values %} {{ data }}, {% endfor %}],
-                    borderColor: '{{ plot.color }}',
-                    backgroundColor: '{{ plot.color }}',
+                    data: [{% for data in plot.get_records %} {{ data.value }}, {% endfor %}],
+                    borderColor: '{{ plot.get_color }}',
+                    backgroundColor: '{{ plot.get_color }}',
                 }]
             }
 
@@ -38,18 +38,12 @@
 {% endblock scripts %}
 
 {% block content %}
-{#    {{ plot }}#}
-{#    {{ plot.color }}#}
-{#    {{ plot.values|length }}#}
-{#    {{ plot.timestamps|length }}#}
-{#    {% for data in plot.timestamps %} {{ data }},{% endfor %}#}
-{#    {% for data in plot.values %} {{ data }}, {% endfor %}#}
     <div class="card bg-dark">
         <div class="card-header text-center">
-            <h2>{{ plot.mapped_name|capfirst }}</h2>
+            <h2>{{ plot.get_mapped_name }}</h2>
         </div>
         <div class="card-body bg-light">
-            <canvas id="chart_{{ plot.name }}" height="100"></canvas>
+            <canvas id="chart_{{ plot.get_name }}" height="100"></canvas>
         </div>
     </div>
 {% endblock content %}

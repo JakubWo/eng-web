@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% include 'component/chart.html' with plot=plots|get_list_elem:plot_name %}
+    {% include 'component/plot.html' with plot=plots|get_plot:plot_name %}
 {% endblock %}

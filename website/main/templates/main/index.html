@@ -13,10 +13,12 @@
         <div class="row">
             {% for plot in plots %}
                 <div class="col-6 my-3">
-                    <a href="{% url 'plot' plot_name=plot.name %}" style="color: inherit; text-decoration: inherit;">
-                        {% include 'component/chart.html' with plot=plot %}
+                    <a href="{% url 'plot' plot_name=plot.get_name %}" style="color: inherit; text-decoration: inherit;">
+                        {% include 'component/plot.html' with plot=plot %}
                     </a>
                 </div>
+            {% empty %}
+                <h1 class="text-danger text-center"><i class="bi bi-slash-circle"></i> Brak danych</h1>
             {% endfor %}
         </div>
     </div>
