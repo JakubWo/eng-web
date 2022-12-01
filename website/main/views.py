@@ -36,7 +36,7 @@ class PlotView(TemplateView):
     def get_context_data(self, **kwargs) -> Dict[str, any]:
         context = super().get_context_data(**kwargs)
 
-        data = get('https://144.24.161.226/getMeasurements?format=json', verify=False)
+        data = get('https://144.24.161.226/getMeasurements?format=json&measurement_type='+context['plot_name'], verify=False)
 
         context['plots'] = map_data_to_object(json.loads(data.text))
 
