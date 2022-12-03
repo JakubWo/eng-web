@@ -1,0 +1,18 @@
+<table class="table table-striped table-bordered table-dark">
+    <tr>
+        <th>Ilość odczytów</th>
+        <td>{{ plot.get_records_length }}</td>
+    </tr>
+    <tr>
+        <th>Średni odstęp pomiędzy odczytami</th>
+        <td>{{ plot.get_avg_period_between_records }}</td>
+    </tr>
+    <tr>
+        <th>Minimalny odstęp między odczytami</th>
+        <td>{{ plot.get_min_period_between_records }}</td>
+    </tr>
+    <tr>
+        <th>Maksymalny odstęp między odczytami</th>
+        <td>{{ plot.get_max_period_between_records }}</td>
+    </tr>
+</table>

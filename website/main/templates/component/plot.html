@@ -1,16 +1,22 @@
 {% block scripts %}
     <script>
         $(document).ready(function () {
-            const ctx = document.getElementById('chart_{{ plot.get_name }}')
+            const ctx = document.getElementById('chart_{{ plot.get_name }}{{ plot.get_period }}')
+
+            {% with records=plot.get_records %}
+                const labels = [{% for data in records %} {{ data.timestamp }},{% endfor %}]
+                const values = [{% for data in records %} {{ data.value }}, {% endfor %}]
+            {% endwith %}
 
             const data = {
-                labels: [{% for data in plot.get_records %} {{ data.timestamp }},{% endfor %}],
+                labels: labels,
                 datasets: [{
-                    data: [{% for data in plot.get_records %} {{ data.value }}, {% endfor %}],
+                    data: values,
                     borderColor: '{{ plot.get_color }}',
                     backgroundColor: '{{ plot.get_color }}',
                 }]
             }
+
 
             const config = {
                 plugins: {
@@ -40,10 +46,14 @@
 {% block content %}
     <div class="card bg-dark">
         <div class="card-header text-center">
-            <h2>{{ plot.get_mapped_name }}</h2>
+            {% if size == 'half' %}
+                <h4>{{ plot.get_mapped_name }} ({{ plot.get_period }})</h4>
+            {% else %}
+                <h2>{{ plot.get_mapped_name }} ({{ plot.get_period }})</h2>
+            {% endif %}
         </div>
         <div class="card-body bg-light">
-            <canvas id="chart_{{ plot.get_name }}" height="100"></canvas>
+            <canvas id="chart_{{ plot.get_name }}{{ plot.get_period }}" height="115"></canvas>
         </div>
     </div>
 {% endblock content %}

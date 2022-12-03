@@ -1,0 +1,8 @@
+{% if plot.get_records_length > 0 %}
+    <h5>Dane statystyczne:</h5>
+    {% include 'component/table/_statistical_table.html' %}
+    <h5>Dane techniczne:</h5>
+    {% include 'component/table/_technical_table.html' %}
+{% else %}
+    <h1 class="text-danger text-center"><i class="bi bi-slash-circle"></i> Brak danych w zadanym okresie</h1>
+{% endif %}

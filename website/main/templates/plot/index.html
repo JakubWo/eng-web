@@ -1,5 +1,33 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% include 'component/plot.html' with plot=plots|get_plot:plot_name %}
+    {% with plot=plots|get_plot:plot_name %}
+
+        <div class="row">
+            <div class="col">
+                {% include 'component/plot.html' %}
+            </div>
+        </div>
+        <div class="row my-3">
+            {% with plot=plot|get_last_month_plot %}
+                <div class="col">
+                    {% include 'component/plot.html' with size='half' %}
+                </div>
+                <div class="col">
+                    {% include 'component/table/tables.html' %}
+                </div>
+            {% endwith %}
+        </div>
+        <hr>
+        <div class="row my-3">
+            {% with plot=plot|get_last_week_plot %}
+                <div class="col">
+                    {% include 'component/plot.html' with size='half' %}
+                </div>
+                <div class="col">
+                    {% include 'component/table/tables.html' %}
+                </div>
+            {% endwith %}
+        </div>
+    {% endwith %}
 {% endblock %}
