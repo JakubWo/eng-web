@@ -1,7 +1,7 @@
 {% block scripts %}
     <script>
         $(document).ready(function () {
-            const ctx = document.getElementById('chart_{{ plot.get_name }}{{ plot.get_period }}')
+            const ctx = $('#chart_{{ plot.get_name }}_{{ plot.get_period|cut:' ' }}')
 
             {% with records=plot.get_records %}
                 const labels = [{% for data in records %} {{ data.timestamp }},{% endfor %}]
@@ -53,7 +53,7 @@
             {% endif %}
         </div>
         <div class="card-body bg-light">
-            <canvas id="chart_{{ plot.get_name }}{{ plot.get_period }}" height="115"></canvas>
+            <canvas id="chart_{{ plot.get_name }}_{{ plot.get_period|cut:' ' }}" height="115"></canvas>
         </div>
     </div>
 {% endblock content %}

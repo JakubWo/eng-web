@@ -1,5 +1,6 @@
 import json
 
+from django.http import JsonResponse
 from django.template.defaultfilters import register
 from django.views.generic import TemplateView
 from requests import get
@@ -44,6 +45,15 @@ def get_last_month_plot(value: Plot):
     return Plot(value.get_name(), records, 'ostatni miesiąc')
 
 
+def get_last_measurement(request) -> JsonResponse:
+    if request.method != 'GET':
+        return JsonResponse({'error': 'Unsupported request method'})
+
+    data = get('https://144.24.161.226/getMeasurements?format=json&last=1', verify=False)
+
+    return JsonResponse(json.loads(data.text))
+
+
 class MainView(TemplateView):
     template_name = 'main/index.html'
 
@@ -63,7 +73,8 @@ class PlotView(TemplateView):
     def get_context_data(self, **kwargs) -> Dict[str, any]:
         context = super().get_context_data(**kwargs)
 
-        data = get('https://144.24.161.226/getMeasurements?format=json&measurement_type='+context['plot_name'], verify=False)
+        data = get('https://144.24.161.226/getMeasurements?format=json&measurement_type=' + context['plot_name'],
+                   verify=False)
 
         context['plots'] = map_data_to_object(json.loads(data.text), 'cały okres')
 

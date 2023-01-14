@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block scripts %}
+    {% include 'component/plot_update.html' with remove=True %}
+{% endblock %}
+
 {% block content %}
     <div class="container-fluid">
         <div class="row">
@@ -13,7 +17,8 @@
         <div class="row">
             {% for plot in plots %}
                 <div class="col-6 my-3">
-                    <a href="{% url 'plot' plot_name=plot.get_name %}" style="color: inherit; text-decoration: inherit;">
+                    <a href="{% url 'plot' plot_name=plot.get_name %}"
+                       style="color: inherit; text-decoration: inherit;">
                         {% include 'component/plot.html' with plot=plot %}
                     </a>
                 </div>

@@ -1,0 +1,75 @@
+<script>
+    setTimeout(function () {
+        let plots = [];
+
+        {% for plot in plots %}
+            {% if not plot_name or plot.get_name == plot_name %}
+                plots.push({
+                    'id': 'chart_{{ plot.get_name }}_{{ plot.get_period|cut:' ' }}',
+                    'name': '{{ plot.get_name }}'
+                })
+            {% endif %}
+        {% endfor %}
+
+        let interval = countInterval(plots);
+
+        setTimeout(function updateCharts() {
+            getLastMeasurement().then(function (result) {
+                plots.forEach(function (plot) {
+                    let chart = Chart.getChart(plot.id);
+                    const timestamp = result[plot.name][0].timestamp;
+                    const labelsTimestamp = chart.data.labels.shift();
+                    chart.data.labels.unshift(labelsTimestamp);
+
+                    if (labelsTimestamp < timestamp) {
+                        updateChart(chart, timestamp, result[plot.name][0].value);
+                    }
+                });
+
+                setTimeout(updateCharts, countInterval(plots));
+            });
+        }, interval);
+    }, 1000)
+
+    function countInterval(plots) {
+        const maxInterval = 3900000 // 1:05:00.000
+        const now = Date.now();
+        let min = Infinity;
+
+        plots.forEach(function (plot) {
+            let chart = Chart.getChart(plot.id);
+
+            const timestamp = chart.data.labels.shift();
+            chart.data.labels.unshift(timestamp);
+
+            if (timestamp < min) {
+                min = timestamp;
+            }
+        })
+
+        return Math.abs(maxInterval + (min - now));
+    }
+
+    function getLastMeasurement() {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                type: 'GET',
+                url: '{% url 'last_measurement' %}',
+                dataType: "json",
+                success: (function (response) {
+                    resolve(response);
+                })
+            });
+        })
+    }
+
+    function updateChart(chart, timestamp, data) {
+        {% if not plot_name %}
+            chart.data.labels.pop();
+            chart.data.datasets[0].data.pop();
+        {% endif %}
+        chart.data.labels.unshift(timestamp);
+        chart.data.datasets[0].data.unshift(data);
+        chart.update();
+    }
+</script>

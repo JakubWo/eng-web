@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block scripts %}
+    {% include 'component/plot_update.html' %}
+{% endblock %}
+
 {% block content %}
     {% with plot=plots|get_plot:plot_name %}
 

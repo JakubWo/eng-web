@@ -33,7 +33,7 @@ class Plot:
         self.__records = records
         self.__period = period
 
-        if period != 'cały okres' and period != 'ostatnie 100':
+        if period != 'cały okres' and period != 'ostatnie 100' and period != 'last':
             self.__records_length = len(records)
             self.__time_gaps = self.get_time_gaps()
             self.__time_gaps_length = len(self.__time_gaps)
