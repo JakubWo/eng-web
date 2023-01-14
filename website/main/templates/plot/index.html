@@ -4,6 +4,12 @@
     {% include 'component/plot_update.html' %}
 {% endblock %}
 
+{% block header %}
+    {% with plot=plots|get_plot:plot_name %}
+        <title>Wykres: {{ plot.get_mapped_name }}</title>
+    {% endwith %}
+{% endblock %}
+
 {% block content %}
     {% with plot=plots|get_plot:plot_name %}
 

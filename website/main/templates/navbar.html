@@ -7,7 +7,7 @@
         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
             <li class="nav-item">
                 <a href="{% url 'index' %}"
-                   class="nav-link align-middle px-0" {% if not plot_name %}style="color: #9b9bff"{% endif %}>
+                   class="nav-link align-middle px-0" {% if request.path == '/' %}style="color: #9b9bff"{% endif %}>
                     <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Strona główna</span>
                 </a>
             </li>
@@ -35,19 +35,10 @@
                 </ul>
             </li>
             <li>
-                <div class="px-0 align-middle text-primary">
-                    <i class="fs-4 bi-database"></i> <span class="ms-1 d-none d-sm-inline">Zmiana źródła danych</span>
-                </div>
-                <ul class="nav flex-column ms-3" data-bs-parent="#menu">
-                    <li>
-                        <a href="#" class="nav-link px-0"> <i class="bi bi-dot"></i>
-                            <span class="d-none d-sm-inline">Dane stacji</span></a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link px-0"> <i class="bi bi-dot"></i>
-                            <span class="d-none d-sm-inline">Dane archiwalne</span></a>
-                    </li>
-                </ul>
+                <a href="{% url 'archive' %}"
+                   class="nav-link align-middle px-0" {% if request.path == '/archive' %}style="color: #9b9bff"{% endif %}>
+                    <i class="fs-4 bi-database"></i> <span class="ms-1 d-none d-sm-inline">Archiwum danych</span>
+                </a>
             </li>
         </ul>
     </div>

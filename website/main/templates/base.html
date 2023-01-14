@@ -25,7 +25,9 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/base.css' %}">
 
-    <title>Weather Station</title>
+    {% block header %}
+        <title>Weather Station</title>
+    {% endblock %}
 </head>
 <body>
 {% block scripts %}
