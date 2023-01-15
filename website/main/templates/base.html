@@ -25,6 +25,10 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/base.css' %}">
 
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
     {% block header %}
         <title>Weather Station</title>
     {% endblock %}
