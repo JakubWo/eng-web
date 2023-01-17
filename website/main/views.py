@@ -119,7 +119,7 @@ class MainView(TemplateView):
 
         data = get('https://144.24.161.226/getMeasurements?format=json&last=100', verify=False)
 
-        context['plots'] = map_data_to_object(json.loads(data.text), 'ostatnie 100')
+        context['plots'] = map_data_to_object(json.loads(data.text), 'ostatnie 100 pomiarów')
 
         return context
 
