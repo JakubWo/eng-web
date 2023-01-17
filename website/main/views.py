@@ -57,7 +57,7 @@ def get_last_measurement(request) -> JsonResponse:
     return JsonResponse(json.loads(data.text))
 
 
-def some_view(request, plot_name):
+def download_csv(request, plot_name):
     filename = 'weather-station_' + plot_name + '_' + str(datetime.now().strftime('%d-%m-%Y_%H-%M-%S')) + '.csv'
     response = HttpResponse(
         content_type='text/csv',

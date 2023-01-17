@@ -18,12 +18,12 @@
             {% for plot in plots %}
                 <tr>
                     <td>{{ plot.get_mapped_name }}</td>
-                    <td><a class="btn btn-success" href="{% url 'some_view' plot_name=plot.get_name %}">Pobierz</a></td>
+                    <td><a class="btn btn-success" href="{% url 'download_csv' plot_name=plot.get_name %}">Pobierz</a></td>
                 </tr>
                 {% if forloop.last %}
                     <tr>
                         <td>Wszystkie dane</td>
-                        <td><a class="btn btn-success" href="{% url 'some_view' plot_name='all_data' %}">Pobierz</a></td>
+                        <td><a class="btn btn-success" href="{% url 'download_csv' plot_name='all_data' %}">Pobierz</a></td>
                     </tr>
                 {% endif %}
             {% empty %}
