@@ -52,7 +52,7 @@ def get_last_measurement(request) -> JsonResponse:
     if request.method != 'GET':
         return JsonResponse({'error': 'Unsupported request method'})
 
-    data = get('https://144.24.161.226/getMeasurements?format=json&last=1', verify=False)
+    data = get('http://eng_api_nginx/measurement/get?last=1')
 
     return JsonResponse(json.loads(data.text))
 
@@ -66,9 +66,9 @@ def download_csv(request, plot_name):
 
     url_params = ''
     if plot_name != 'all_data':
-        url_params = '&measurement_type=' + plot_name
+        url_params = '?measurement_type=' + plot_name
 
-    data = get('https://144.24.161.226/getMeasurements?format=json' + url_params, verify=False)
+    data = get('http://eng_api_nginx/measurement/get' + url_params)
     data = json.loads(data.text)
     writer = csv.writer(response)
 
@@ -77,7 +77,7 @@ def download_csv(request, plot_name):
         title_row = ['timestamp']
         for key in data:
             title_row.append(key)
-            for record in data[key]:
+            for record in data[key]['measurements']:
                 if record['timestamp'] not in csv_data:
                     csv_data[record['timestamp']] = []
                     csv_data[record['timestamp']].append(record['timestamp'])
@@ -91,7 +91,7 @@ def download_csv(request, plot_name):
 
     else:
         writer.writerow(['timestamp', plot_name])
-        for record in data[plot_name]:
+        for record in data[plot_name]['measurements']:
             writer.writerow([record['timestamp'], record['value']])
 
     return response
@@ -103,8 +103,7 @@ class ArchiveView(TemplateView):
     def get_context_data(self, **kwargs) -> Dict[str, any]:
         context = super().get_context_data(**kwargs)
 
-        data = get('https://144.24.161.226/getMeasurements?format=json&measurement_type=',
-                   verify=False)
+        data = get('http://eng_api_nginx/measurement/get?measurement_type=')
 
         context['plots'] = map_data_to_object(json.loads(data.text), 'limit')
 
@@ -117,7 +116,7 @@ class MainView(TemplateView):
     def get_context_data(self, **kwargs) -> Dict[str, any]:
         context = super().get_context_data(**kwargs)
 
-        data = get('https://144.24.161.226/getMeasurements?format=json&last=100', verify=False)
+        data = get('http://eng_api_nginx/measurement/get?last=100')
 
         context['plots'] = map_data_to_object(json.loads(data.text), 'ostatnie 100 pomiarów')
 
@@ -130,8 +129,7 @@ class PlotView(TemplateView):
     def get_context_data(self, **kwargs) -> Dict[str, any]:
         context = super().get_context_data(**kwargs)
 
-        data = get('https://144.24.161.226/getMeasurements?format=json&measurement_type=' + context['plot_name'],
-                   verify=False)
+        data = get('http://eng_api_nginx/measurement/get?measurement_type=' + context['plot_name'])
 
         context['plots'] = map_data_to_object(json.loads(data.text), 'cały okres')
 

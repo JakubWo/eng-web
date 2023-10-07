@@ -17,10 +17,9 @@
             getLastMeasurement().then(function (result) {
                 plots.forEach(function (plot) {
                     let chart = Chart.getChart(plot.id);
-                    const timestamp = result[plot.name][0].timestamp;
+                    const timestamp = result[plot.name].measurements[0].timestamp;
                     const labelsTimestamp = chart.data.labels.shift();
                     chart.data.labels.unshift(labelsTimestamp);
-
                     if (labelsTimestamp < timestamp) {
                         updateChart(chart, timestamp, result[plot.name][0].value);
                     }
@@ -70,6 +69,6 @@
         {% endif %}
         chart.data.labels.unshift(timestamp);
         chart.data.datasets[0].data.unshift(data);
-        chart.update();
+        {#chart.update();#}
     }
 </script>

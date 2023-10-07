@@ -5,7 +5,7 @@ def map_data_to_object(measurements: dict, period: str) -> list:
     plots = list()
 
     for key in measurements:
-        plots.append(Plot(key, measurements[key], period))
+        plots.append(Plot(key, measurements[key]['measurements'], period))
 
     return plots
 

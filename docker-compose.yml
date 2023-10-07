@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./website/:/usr/src/app/
+    ports:
+      - '8000:8000'
+    networks:
+      - 'external_network'
+
+networks:
+  external_network:
+    external: true
+    name: eng_api_external_network
