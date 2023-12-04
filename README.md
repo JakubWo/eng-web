@@ -1,3 +1,9 @@
+To run project:
+`docker compose up`
+
+
+
+
 HOW TO DEVELOP:
 
 AT FIRST ACTIVATE CREATE AND ACTIVATE ENV:
